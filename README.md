@@ -109,15 +109,3 @@ app/
 
 </details>
 
-## Участие
-
-1. Форкните репозиторий
-2. Создайте ветку: `git checkout -b feat/my-feature`
-3. Запустите тесты: `pnpm test`
-4. Отправьте pull request
-
-Стиль кода: Biome, без UI-библиотек, без `any`, Conventional Commits.
-
-## Лицензия
-
-MIT

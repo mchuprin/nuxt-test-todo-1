@@ -108,16 +108,3 @@ app/
 | Deployment | Static (Docker/GH Pages) | Static | Server required |
 
 </details>
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feat/my-feature`
-3. Run tests: `pnpm test`
-4. Submit a pull request
-
-Code style: Biome formatter, no UI libraries, no `any`, Conventional Commits.
-
-## License
-
-MIT
