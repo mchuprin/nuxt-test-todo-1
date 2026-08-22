@@ -1,0 +1,33 @@
+{
+  "name": "todo-1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "biome check app/",
+    "lint:fix": "biome check --write app/",
+    "format": "biome format --write app/",
+    "fix": "biome check --write --unsafe app/",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^1.0.2",
+    "nuxt": "^4.5.2",
+    "pinia": "^4.0.3",
+    "vue": "^3.5.41",
+    "vue-router": "^5.2.0"
+  },
+  "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621",
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.9",
+    "jsdom": "^30.0.1",
+    "sass-embedded": "^1.102.0",
+    "typescript": "~5.8.3",
+    "vitest": "^4.1.11",
+    "vue-tsc": "^2.2.12"
+  }
+}

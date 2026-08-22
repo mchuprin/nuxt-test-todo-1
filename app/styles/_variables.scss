@@ -1,0 +1,27 @@
+:root {
+  font-size: 14px;
+
+  // ── Colors ───────────────────────────────────────────
+  --color-bg: #0f0e0d;
+  --color-surface: #171513;
+  --color-surface-2: #201e1b;
+  --color-border: #252220;
+  --color-text-1: #e0d9d0;
+  --color-text-2: #867f76;
+  --color-text-3: #4f4a45;
+  --color-accent: #c49a6c;
+  --color-accent-dim: #7a6040;
+  --color-danger: #a86060;
+  --color-success: #5f8a5f;
+
+  // ── Typography ──────────────────────────────────────
+  --font-sans: 'Outfit', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  // ── Font sizes (base 14px) ──────────────────────────
+  --text-xs: 0.786rem; // 11px
+  --text-sm: 0.857rem; // 12px
+  --text-base: 1rem; // 14px
+  --text-md: 1.143rem; // 16px
+  --text-lg: 1.714rem; // 24px
+}

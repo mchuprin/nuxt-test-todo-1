@@ -1,0 +1,10 @@
+node_modules
+.nuxt
+.output
+.git
+*.md
+vitest.*
+biome.json
+tsconfig.json
+.vscode
+reference
