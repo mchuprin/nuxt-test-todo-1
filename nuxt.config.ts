@@ -6,7 +6,13 @@ export default defineNuxtConfig({
   ssr: false,
 
   app: {
-    base: process.env.NUXT_APP_BASE_URL || '/',
+    baseURL: import.meta.env.NUXT_APP_BASE_URL || '/',
+  },
+
+  router: {
+    options: {
+      hashMode: true,
+    },
   },
 
   css: ['~/styles/styles.scss'],

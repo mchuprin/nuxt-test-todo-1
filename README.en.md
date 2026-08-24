@@ -1,110 +1,72 @@
-# Todo Notes
+# Todo Notes — Test Assignment
 
-A notes app with undo/redo, auto-save drafts, and cross-tab resilience — built with Nuxt 4, zero UI libraries.
+Maksim Chuprin, August 2026
+
+![Nuxt](https://img.shields.io/badge/Nuxt-4.5-00DC82?logo=nuxt)
+![Vue](https://img.shields.io/badge/Vue-3.5-42b883?logo=vuedotjs)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript)
+![Tests](https://img.shields.io/badge/tests-49%20passing-brightgreen)
 
 [Русский](./README.md)
 
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Nuxt](https://img.shields.io/badge/Nuxt-4.5-00DC82?logo=nuxt)
-![Vue](https://img.shields.io/badge/Vue-3.5-42b883?logo=vuedotjs)
-![Tests](https://img.shields.io/badge/tests-49%20passing-brightgreen)
+## Task Summary
 
-<!-- Screenshot placeholder: capture the note editor page showing undo/redo buttons, todo list, and dark theme -->
-<!-- ![App screenshot](./docs/screenshot.png) -->
+Build a single-page notes application with todo items. Core requirements: undo/redo editing history, auto-saved drafts, and resilience when multiple tabs are open simultaneously.
 
-## Why this exists
+## Approach & Decisions
 
-Most todo apps lose your work. You switch tabs, your draft vanishes. You make a mistake, there's no undo. You delete a note in one tab, the other tab crashes.
+**Nuxt 4 SPA over SSR.** No server-side data, auth, or SEO needs. SSR would add complexity without benefit. Nuxt chosen for auto-imports, file-based routing, and built-in Pinia integration.
 
-Todo Notes solves these three problems with a client-side architecture that respects your data — even when things go wrong.
+**Pinia for state, localStorage for persistence.** Store centralizes CRUD logic and separates business from presentation. localStorage is a thin persistence layer via a dedicated `useStorage` composable — not scattered across components.
 
-## Key features
+**Undo/redo through pure functions + composable.** History is an array of `HistoryDelta` objects. `applyDelta` and `reverseDelta` are pure functions — trivially testable. The composable adds reactivity (ref, computed, watchEffect) on top. 50-step cap is a deliberate trade-off between history completeness and memory usage. Continuous typing merges into one action via blur/pause debounce (300ms).
 
-- **Undo/redo that remembers** — 50-step history. Continuous typing counts as one action. Ctrl+Z / Ctrl+Shift+Z globally on the editor page.
-- **Drafts survive crashes** — Auto-saves every second to localStorage. Come back tomorrow, restore your work.
-- **Cross-tab safe** — Delete a note in another tab? A modal tells you what happened. No broken UI, no silent data loss.
-- **No UI libraries** — Every component built from scratch with SCSS. Full control over styling and behavior.
-- **49 unit tests** — History logic, Pinia store, and localStorage utilities covered by Vitest.
+**SCSS without UI libraries.** Full control over styles required by the task. All components built from scratch. Modals with focus-trap and Escape handling — custom implementation, not a node_modules dependency.
 
-## Quick start
+**Cross-tab safety via `storage` event.** The browser fires `storage` when another tab modifies localStorage. The note page listens and re-syncs the store. If the note was deleted elsewhere, a modal appears instead of a crash.
+
+**Vitest + jsdom for testing.** 49 unit tests cover: useHistory logic (applyDelta, reverseDelta, composable), Pinia store (CRUD, sorting, edge-cases), localStorage utilities (drafts, pending notes, schema versioning). No e2e tests — not required by the task, but the clear next step.
+
+**Biome over ESLint.** Faster, simpler config, built-in formatter. Only friction: alphabetical import sorting, which required attention during development.
+
+## What's Implemented
+
+- ✅ Note CRUD (create, edit, delete)
+- ✅ Undo/redo history (50 steps, Ctrl+Z / Ctrl+Shift+Z hotkeys)
+- ✅ Auto-save drafts + restore on load
+- ✅ Cross-tab safety (modal when note deleted in another tab)
+- ✅ Confirmation modals (delete, cancel editing)
+- ✅ Edge-cases: direct URL to non-existent note → redirect, empty fields, null/undefined
+- ✅ 49 unit tests (useHistory: 20, store: 15, storage: 14)
+- ✅ Docker + docker-compose (multi-stage: node → nginx)
+- ✅ GitHub Pages CI/CD via GitHub Actions
+- ✅ TypeScript strict, Biome linting
+
+## Known Limitations & Future Improvements
+
+- **No e2e tests** — Vitest covers logic, but not user journeys. Next step: Playwright.
+- **No PWA** — No Service Worker. Offline-first works via localStorage, but no manifest or installability.
+- **No server sync** — localStorage only. Multi-device requires a backend.
+- **History tied to layout** — `useHistory` resets when leaving the editor page (composable unmount).
+- **Docker not tested** — Dockerfile and docker-compose are syntactically correct, but `docker build` was not executed during the assignment (daemon unavailable).
+
+## How to Run
 
 ```bash
-# Option 1: Docker (recommended)
+# Docker
 docker-compose up
 # Open http://localhost:3000
 
-# Option 2: Development
+# Development
 pnpm install
 pnpm dev
 # Open http://localhost:3000
+
+# Tests
+pnpm test
+
+# Lint
+pnpm lint
 ```
 
-## Development
-
-```bash
-pnpm test          # Run 49 unit tests
-pnpm lint          # Check code with Biome
-pnpm build         # Production build
-pnpm preview       # Preview production build locally
-```
-
-<details>
-<summary>GitHub Pages deployment</summary>
-
-Push to `main` branch triggers automatic deployment to GitHub Pages.
-
-Update `NUXT_APP_BASE_URL` in `.github/workflows/deploy.yml` to match your repo name:
-
-```yaml
-env:
-  NUXT_APP_BASE_URL: /your-repo-name/
-```
-
-</details>
-
-## Usage
-
-Create a note, add todos, use Ctrl+Z to undo mistakes:
-
-```
-/                  → List of all notes
-/note/new          → Create new note
-/note/:id          → Edit existing note
-```
-
-Keyboard shortcuts on editor page:
-- `Ctrl+Z` — Undo
-- `Ctrl+Shift+Z` or `Ctrl+Y` — Redo
-
-## Architecture
-
-```
-app/
-├── pages/              # Route components
-│   ├── index.vue       # Note list
-│   └── note/[id].vue   # Editor (228 lines)
-├── components/
-│   ├── app/            # Reusable: Button, Input, Modal
-│   └── note/           # Feature: Card, TodoItem, actions
-├── composables/
-│   └── useHistory.ts   # Undo/redo engine (pure functions + composable)
-├── stores/
-│   └── notes.ts        # Pinia: CRUD, localStorage sync
-├── types/
-│   └── index.ts        # NoteLayoutState, TodoItem, HistoryDelta
-└── utils/
-    └── storage.ts      # localStorage helpers with schema versioning
-```
-
-<details>
-<summary>Comparison with alternatives</summary>
-
-| Feature | Todo Notes | localStorage-only apps | Server-backed apps |
-|---------|-----------|----------------------|-------------------|
-| Undo/redo | 50 steps, blur-aware | No | Rarely |
-| Draft recovery | Auto-save + prompt | Manual | Requires backend |
-| Cross-tab safety | Modal notification | Crashes or silent | WebSocket sync |
-| Offline-first | Yes | Yes | No |
-| Deployment | Static (Docker/GH Pages) | Static | Server required |
-
-</details>
+Expected: app opens at `localhost:3000`, note list is empty, "Create note" button is available. Tests: 49/49 green.
