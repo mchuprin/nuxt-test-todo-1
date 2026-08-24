@@ -9,6 +9,16 @@ Maksim Chuprin, August 2026
 
 [Русский](./README.md)
 
+<p align="center">
+  <a href="https://mchuprin.github.io/nuxt-test-todo-1/">Live Demo</a>
+</p>
+
+<p align="center">
+  <img src=".github/assets/demo.png" alt="Demo" width="800" />
+</p>
+
+---
+
 ## Task Summary
 
 Build a single-page notes application with todo items. Core requirements: undo/redo editing history, auto-saved drafts, and resilience when multiple tabs are open simultaneously.

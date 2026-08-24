@@ -9,6 +9,16 @@
 
 [English](./README.en.md)
 
+<p align="center">
+  <a href="https://mchuprin.github.io/nuxt-test-todo-1/">Live Demo</a>
+</p>
+
+<p align="center">
+  <img src=".github/assets/demo.png" alt="Demo" width="800" />
+</p>
+
+---
+
 ## Задача
 
 Создать SPA-приложение для заметок с задачами (todo). Ключевые требования: undo/redo история редактирования, автосохранение черновиков, устойчивость к одновременной работе во нескольких вкладках.
