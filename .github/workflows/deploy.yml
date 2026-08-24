@@ -32,7 +32,7 @@ jobs:
 
       - run: pnpm nuxt generate
         env:
-          NUXT_APP_BASE_URL: /todo-1/
+          NUXT_APP_BASE_URL: /nuxt-test-todo-1/
 
       - uses: actions/configure-pages@v5
 
