@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   ssr: false,
 
   app: {
-    baseURL: import.meta.env.NUXT_APP_BASE_URL || '/',
+    baseURL: process.env.NUXT_APP_BASE_URL || '/',
   },
 
   router: {
