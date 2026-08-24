@@ -34,6 +34,8 @@ jobs:
         env:
           NUXT_APP_BASE_URL: /todo-1/
 
+      - uses: actions/configure-pages@v5
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .output/public
